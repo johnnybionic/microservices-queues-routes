@@ -1,0 +1,1 @@
+delete from map_long_to_string;

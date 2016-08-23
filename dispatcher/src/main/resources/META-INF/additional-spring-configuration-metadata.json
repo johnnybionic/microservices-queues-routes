@@ -1,0 +1,22 @@
+{"properties": [
+  {
+    "name": "document.queue.request",
+    "type": "java.lang.String",
+    "description": "A description for 'document.queue.request'"
+  },
+  {
+    "name": "document.queue.response",
+    "type": "java.lang.String",
+    "description": "A description for 'document.queue.response'"
+  },
+  {
+    "name": "document.queue.ack",
+    "type": "java.lang.String",
+    "description": "A description for 'document.queue.ack'"
+  },
+  {
+    "name": "activemq.url",
+    "type": "java.lang.String",
+    "description": "A description for 'activemq.url'"
+  }
+]}

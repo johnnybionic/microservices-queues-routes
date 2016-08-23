@@ -1,0 +1,67 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Hazelcast server",
+		"_postman_id": "1fd0b8f5-f76c-ac50-fb6c-b48eec09c7d4",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "All map entries",
+			"request": {
+				"url": "http://localhost:8000/service/map",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Single map entry",
+			"request": {
+				"url": "http://localhost:8000/service/map/1",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "All queue entries for one queue",
+			"request": {
+				"url": "http://localhost:8000/service/queue/queue.1",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "One queue entry",
+			"request": {
+				"url": "http://localhost:8000/service/queue/queue.1/1",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
