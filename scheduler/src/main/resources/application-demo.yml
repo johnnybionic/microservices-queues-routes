@@ -1,0 +1,21 @@
+---
+hazelcast:
+  server:
+    address: 127.0.0.1:5701
+  group:
+    server: hazelcast-group-server
+    password: hazelcast-group-password
+
+server:
+  port: ${port:8020}
+  
+spring:
+  datasource:
+    url: jdbc:hsqldb:mem:scheduledb
+    username: sa
+    password: 
+    driver-class-name: org.hsqldb.jdbcDriver
+    platform: demo
+  jpa:
+    hibernate:
+      ddl-auto: none

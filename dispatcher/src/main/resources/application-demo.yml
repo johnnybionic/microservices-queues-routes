@@ -1,0 +1,51 @@
+---
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:dispatcher_store
+    platform: demo
+    username: sa
+    password: 
+    
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    database: H2
+    generate-ddl: true
+    #show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+    properties: 
+      hibernate.hbm2ddl.import_files: import-demo.sql
+              
+      
+  h2:
+    console:
+      enabled: true
+      
+#logging.level:               
+  #org.hibernate.tool.hbm2ddl: DEBUG
+  #org.hibernate.SQL: DEBUG   
+  #org.hibernate.type: TRACE 
+  
+---
+server:
+  port: ${port:8030}
+
+---
+activemq:
+  url: tcp://127.0.0.1:61616
+  
+---    
+document:
+  queue:
+    request: document.request.queue
+    response: document.response.queue
+    ack: document.request.ack.queue
+  
+---
+hazelcast:
+  server:
+    address: 127.0.0.1:5701
+  group:
+    server: hazelcast-group-server
+    password: hazelcast-group-password  

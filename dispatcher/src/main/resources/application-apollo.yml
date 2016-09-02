@@ -20,3 +20,11 @@ document:
     request: queue://document.request.queue
     response: queue://document.response.queue
     ack: queue://document.request.ack.queue
+    
+---
+hazelcast:
+  server:
+    address: 127.0.0.1:5701
+  group:
+    server: hazelcast-group-server
+    password: hazelcast-group-password

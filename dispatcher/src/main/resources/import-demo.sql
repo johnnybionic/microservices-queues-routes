@@ -1,0 +1,3 @@
+-- data used for demo profile
+INSERT INTO task (id,name,source_queue,cron_expression,delay_period,maximum_attempts,current_attempt,correlation_id,state,last_accessed) VALUES (1,'Task 1','queue.1',NULL,5000,50,NULL,NULL,'IDLE', {ts '2016-08-31 15:06:52.69'});
+INSERT INTO task (id,name,source_queue,cron_expression,delay_period,maximum_attempts,current_attempt,correlation_id,state,last_accessed) VALUES (2,'Task 2','queue.1',NULL,20000,50,NULL,NULL,'IDLE', {ts '2016-08-18 12:00:00.00'});

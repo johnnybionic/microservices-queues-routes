@@ -37,7 +37,7 @@ public class DocumentRequestReceiver {
 	 */
 	//@JmsListener(destination = "document.request.queue")
 	@JmsListener(destination = "${document.queue}")
-	@SendTo("${document.ack.queue}")
+	@SendTo("${document.queue.ack}")
 	public String receiveDocumentRequest(DocumentRequest documentRequest) {
 		log.info(documentRequest);
 		handler.processDocumentReqest(documentRequest);

@@ -1,1 +1,1 @@
-delete from map_long_to_string;
+delete from map_string_to_string;

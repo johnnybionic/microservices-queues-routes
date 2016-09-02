@@ -1,0 +1,28 @@
+---
+spring:
+  h2:
+    console:
+      enabled: true
+      
+---
+server:
+  port: ${port:8030}
+
+---
+activemq:
+  url: tcp://127.0.0.1:61616
+  
+---    
+document:
+  queue:
+    request: document.request.queue
+    response: document.response.queue
+    ack: document.request.ack.queue
+    
+---
+hazelcast:
+  server:
+    address: 127.0.0.1:5701
+  group:
+    server: hazelcast-group-server
+    password: hazelcast-group-password

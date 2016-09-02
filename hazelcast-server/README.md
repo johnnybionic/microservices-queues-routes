@@ -2,11 +2,9 @@
 
 Provides centralised, persistent maps and queues.
 
-The purpose of this module is to provide long-lived maps and queues (hours, days, months ...). It demonstrates how to 
-add persistence to Hazelcast.
+The purpose of this module is to provide long-lived maps and queues (hours, days, months ...). It demonstrates how to add persistence to Hazelcast.
 
-Monitoring of the maps and queues is available via ReST, using the standard controller/service/dao pattern. Example ReST calls
-are available for Postman in:
+Monitoring of the maps and queues is available via ReST, using the standard controller/service/dao pattern. Example ReST calls are available for Postman in:
  
 src\test\resources\postman_collection.json
 
@@ -18,8 +16,7 @@ Uses Spring JDBC templates for data access.
 
 There is only one store for the maps, but queues require a store per queue ('prototype' bean scope).
 
-'Upsert' is used to save the map entries - MySQL supports this by a non-standard extension, and luckily H2 can
-emulate this.
+'Upsert' is used to save the map entries - MySQL supports this by a non-standard extension, and luckily H2 can emulate this.
 
 
 # example client
@@ -35,11 +32,13 @@ case an H2 in-memory database is created. To start in this mode, use 'demo' as t
 
 (as a VM argument).  
 
+command line: mvn spring-boot:run -Dspring.profiles.active=demo
+
 The database is not populated, there are scripts in src/test/resources for this, or run the example client.
 
 An H2 console is available at
 
 http://localhost:8080/h2-console/
 
-Use  jdbc:h2:mem:hazelcast_store as the conenction, and 'sa' as the user (no password).
+Use  jdbc:h2:mem:hazelcast_store as the connection, and 'sa' as the user (no password).
 

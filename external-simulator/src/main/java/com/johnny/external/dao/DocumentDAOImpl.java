@@ -84,7 +84,7 @@ public class DocumentDAOImpl implements DocumentDAO {
 
 		try (Connection connection = dataSource.getConnection();
 				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement.executeQuery(sql)) {;
+				ResultSet resultSet = statement.executeQuery(sql)) {
 
 
 			if (resultSet.next()) {

@@ -17,16 +17,14 @@ import com.johnny.external.domain.DocumentRequest;
 import com.johnny.external.service.DocumentService;
 
 @Service
-@Profile({"default", "junit", "apollo"})
+@Profile({"default", "junit", "apollo", "demo"})
 public class DocumentRequestHandlerDefaultImpl implements DocumentRequestHandler {
-
-	//private static final String DOCUMENT_RESPONSE_QUEUE = "document.response.queue";
 	
 	private DocumentService documentService;
 	private JmsTemplate jmsTemplate;
 	private MessageConverter converter;
 
-	@Value("${document.response.queue}")
+	@Value("${document.queue.response}")
 	private String documentResponseQueue;
 	
 	

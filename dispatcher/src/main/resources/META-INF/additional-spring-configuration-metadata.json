@@ -18,5 +18,15 @@
     "name": "activemq.url",
     "type": "java.lang.String",
     "description": "A description for 'activemq.url'"
+  },
+  {
+    "name": "hazelcast.server.address",
+    "type": "java.lang.String",
+    "description": "A description for 'hazelcast.server.address'"
+  },
+  {
+    "name": "hazelcast.group.server",
+    "type": "java.lang.String",
+    "description": "A description for 'hazelcast.group.server'"
   }
 ]}
