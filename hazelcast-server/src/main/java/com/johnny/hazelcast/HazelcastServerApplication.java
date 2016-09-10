@@ -9,10 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author johnny
  */
 @SpringBootApplication
-public final class HazelcastServerApplication {
-
-    private HazelcastServerApplication() {
-    }
+public class HazelcastServerApplication {
 
     /**
      * Main entry point.

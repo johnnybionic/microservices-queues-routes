@@ -15,6 +15,11 @@ public class ExternalSimulatorApplication extends SpringBootServletInitializer {
         return application.sources(ExternalSimulatorApplication.class);
     }
 
+    /**
+     * The main entry point.
+     * 
+     * @param args command line
+     */
     public static void main(final String[] args) {
         SpringApplication.run(ExternalSimulatorApplication.class, args);
 
