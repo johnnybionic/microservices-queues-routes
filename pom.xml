@@ -12,6 +12,7 @@
 		<module>hazelcast-server</module>
 		<module>external-simulator</module>
 		<module>scheduler</module>
+		<module>dispatcher</module>
 	</modules>
 
 	<dependencies>
