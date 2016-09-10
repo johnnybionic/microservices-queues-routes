@@ -25,8 +25,9 @@ import com.johnny.hazelcast.service.QueueService;
 public class QueueServiceTest {
 
 	private static final String QUEUE_NAME = "queue.1";
-
+	private static final String QUEUE_NAME_NO_ENTRIES = "queue.x";
 	private static final Long TEST_ID = 1L;
+
 	
 	/* unit under test. */
 	@Autowired
@@ -44,6 +45,15 @@ public class QueueServiceTest {
 		String findOne = service.findOne(QUEUE_NAME, TEST_ID);
 		assertNotNull(findOne);
 		assertEquals("101", findOne);
+		
+	}
+	
+	// MySQL doesn't like IN with no entries, but H2 is fine
+	@Test
+	public void thatEmptyMapReturnedWhenNoEntries() {
+		Map<Long, String> findAll = service.findAll(QUEUE_NAME_NO_ENTRIES);
+		assertNotNull(findAll);
+		assertEquals(0, findAll.size());
 		
 	}
 }

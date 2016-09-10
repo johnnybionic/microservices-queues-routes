@@ -11,10 +11,10 @@ public class DispatcherApplication {
 
     @Resource
     private ThreadPoolTaskScheduler threadPoolTaskScheduler;
-    
-	public static void main(String[] args) {
-		SpringApplication.run(DispatcherApplication.class, args);
-		
-	}
-	
+
+    public static void main(final String[] args) {
+        SpringApplication.run(DispatcherApplication.class, args);
+
+    }
+
 }

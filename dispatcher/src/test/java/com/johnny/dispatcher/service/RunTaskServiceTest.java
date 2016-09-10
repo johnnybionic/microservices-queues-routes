@@ -1,6 +1,7 @@
 package com.johnny.dispatcher.service;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.mock;
@@ -8,10 +9,10 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.johnny.dispatcher.dao.TaskDao;
@@ -37,6 +40,11 @@ import com.johnny.dispatcher.domain.TaskState;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
 @ActiveProfiles("junit")
+//@SqlGroup({
+//    @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "classpath:beforeTests.sql"),
+//    @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "classpath:afterTests.sql") 
+//})
+
 public class RunTaskServiceTest {
 
 	private static final String NAME = "Task 1";
@@ -77,7 +85,7 @@ public class RunTaskServiceTest {
 	@Test
 	public void thatDoesNotRunIfWaiting() {
 		scheduleTask.setCurrentAttempt(0L);
-		scheduleTask.setState(TaskState.WAITING);
+		scheduleTask.setState(TaskState.RUNNING);
 		scheduleTask.setCorrelationId(CORRELATION_ID);
 
 		when(dao.findOne(ID)).thenReturn(scheduleTask);
@@ -111,7 +119,7 @@ public class RunTaskServiceTest {
 	public void thatTaskTimesOut() {
 		scheduleTask.setCurrentAttempt(0L);
 		scheduleTask.setMaximumAttempts(1L);
-		scheduleTask.setState(TaskState.WAITING);
+		scheduleTask.setState(TaskState.RUNNING);
 		scheduleTask.setCorrelationId(CORRELATION_ID);
 
 		when(dao.findOne(ID)).thenReturn(scheduleTask);
@@ -164,7 +172,7 @@ public class RunTaskServiceTest {
 		when(queueService.hasEntry(QUEUE_NAME)).thenReturn(true);
 		Document document = new Document(ID, null, null);
 		when(queueService.readQueue(QUEUE_NAME)).thenReturn(document);
-		when(correlationIdService.getCorrelationId()).thenReturn(CORRELATION_ID);
+		when(correlationIdService.getCorrelationId(ID)).thenReturn(CORRELATION_ID);
 		
 		runTaskService.run(ID);
 		
@@ -172,10 +180,122 @@ public class RunTaskServiceTest {
 		verify(queueService).hasEntry(QUEUE_NAME);
 		verify(queueService, times(1)).readQueue(QUEUE_NAME);
 		verify(messageService).sendMessage(isA(DocumentRequest.class));
-		verify(correlationIdService).getCorrelationId();
+		verify(correlationIdService).getCorrelationId(ID);
 
-		assertTrue(scheduleTask.isWaiting());
+		assertTrue(scheduleTask.isRunning());
 		assertEquals(CORRELATION_ID, scheduleTask.getCorrelationId());
+	}
+	
+	/**
+	 * Mark as complete - try to reset a task that isn't running
+	 */
+	@Test
+	public void thatMarkAsCompleteForNonRunningHasNoEffect() {
+
+		scheduleTask.setState(TaskState.IDLE);
+		scheduleTask.setCorrelationId(null);
+		scheduleTask.setSourceQueue(QUEUE_NAME);
+
+		when(dao.findOne(ID)).thenReturn(scheduleTask);
+
+		runTaskService.markAsComplete(ID);
+
+		verify(dao).findOne(ID);
+
+	}
+
+	/**
+	 * Mark as complete - try to reset a task that timed out
+	 */
+	@Test
+	public void thatMarkAsCompleteForTimedOutHasNoEffect() {
+
+		scheduleTask.setState(TaskState.TIMED_OUT);
+		scheduleTask.setCorrelationId(CORRELATION_ID);
+		scheduleTask.setSourceQueue(QUEUE_NAME);
+
+		when(dao.findOne(ID)).thenReturn(scheduleTask);
+
+		runTaskService.markAsComplete(ID);
+
+		verify(dao).findOne(ID);
+		assertEquals(CORRELATION_ID, scheduleTask.getCorrelationId());
+	}
+
+	/**
+	 * Mark as complete - reset a running task
+	 * - reset correlation ID
+	 * - reset history
+	 * - set as idle
+	 */
+	@Test
+	public void thatMarkAsCompleteForRunningTaskWorks_ById() {
+
+		scheduleTask.setState(TaskState.RUNNING);
+		scheduleTask.setCorrelationId(CORRELATION_ID);
+		scheduleTask.setSourceQueue(QUEUE_NAME);
+		scheduleTask.addHistory("One two three");
+		scheduleTask.setMaximumAttempts(99L);
+		scheduleTask.updateCurrentAttempt();
+		scheduleTask.updateCurrentAttempt();
+
+		when(dao.findOne(ID)).thenReturn(scheduleTask);
+
+		runTaskService.markAsComplete(ID);
+
+		verify(dao).findOne(ID);
+		assertNull(scheduleTask.getCorrelationId());
+		assertNull(scheduleTask.getHistory());
+		assertTrue(scheduleTask.isIdle());
+		assertEquals(0L, (long)scheduleTask.getCurrentAttempt());
+	}
+
+	/**
+	 * Mark as complete - reset a running task
+	 * - reset correlation ID
+	 * - reset history
+	 * - set as idle
+	 */
+	@Test
+	public void thatMarkAsCompleteForRunningTaskWorks_ByCorrelationId() {
+
+		scheduleTask.setState(TaskState.RUNNING);
+		scheduleTask.setCorrelationId(CORRELATION_ID);
+		scheduleTask.setSourceQueue(QUEUE_NAME);
+		scheduleTask.addHistory("One two three");
+		scheduleTask.setMaximumAttempts(99L);
+		scheduleTask.updateCurrentAttempt();
+		scheduleTask.updateCurrentAttempt();
+
+		when(dao.findByCorrelationId(CORRELATION_ID)).thenReturn(scheduleTask);
+
+		runTaskService.markAsComplete(CORRELATION_ID);
+
+		verify(dao).findByCorrelationId(CORRELATION_ID);
+		
+		assertNull(scheduleTask.getCorrelationId());
+		assertNull(scheduleTask.getHistory());
+		assertTrue(scheduleTask.isIdle());
+		assertEquals(0L, (long)scheduleTask.getCurrentAttempt());
+	}
+
+	/**
+	 * The task does not run if suspended.
+	 * - there should be no change to the task
+	 */
+	@Test
+	public void thatDoesNotRunIfSuspended() {
+		scheduleTask.setCurrentAttempt(0L);
+		scheduleTask.setState(TaskState.SUSPENDED);
+		scheduleTask.setCorrelationId(CORRELATION_ID);
+
+		when(dao.findOne(ID)).thenReturn(scheduleTask);
+		
+		runTaskService.run(ID);
+		
+		verify(dao).findOne(ID);
+		verifyZeroInteractions(queueService, messageService);
+
 	}
 
 	// when using SpringBootTest, this will override any config

@@ -24,7 +24,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.johnny.dispatcher.dao.TaskDao;
 import com.johnny.dispatcher.domain.RunnableTask;
 import com.johnny.dispatcher.domain.Task;
-import com.johnny.dispatcher.service.DefaultTaskService;
+import com.johnny.dispatcher.service.TaskMaintenanceServiceDefault;
 
 @ActiveProfiles("junit")
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -39,7 +39,7 @@ public class TaskConfigurationTest {
 	private TaskConfiguration configuration;
 	
 	@Mock
-	private DefaultTaskService taskService;
+	private TaskMaintenanceServiceDefault taskService;
 	
 	@Mock
 	private ThreadPoolTaskScheduler threadPoolTaskScheduler;

@@ -28,5 +28,10 @@
     "name": "hazelcast.group.server",
     "type": "java.lang.String",
     "description": "A description for 'hazelcast.group.server'"
+  },
+  {
+    "name": "document.file.output.folder",
+    "type": "java.lang.String",
+    "description": "A description for 'document.file.output.folder'"
   }
 ]}

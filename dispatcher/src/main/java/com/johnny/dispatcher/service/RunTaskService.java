@@ -10,4 +10,6 @@ package com.johnny.dispatcher.service;
 public interface RunTaskService {
 
 	void run(Long taskId);
+	void markAsComplete(Long taskId);
+	void markAsComplete(String identifier);
 }

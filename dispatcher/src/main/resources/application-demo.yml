@@ -41,7 +41,9 @@ document:
     request: document.request.queue
     response: document.response.queue
     ack: document.request.ack.queue
-  
+  file:
+    output:
+      folder: K:\java-dev\document-output-folder  
 ---
 hazelcast:
   server:

@@ -8,5 +8,5 @@ import com.johnny.dispatcher.domain.Task;
 @RestResource
 public interface TaskDao extends CrudRepository<Task, Long> {
 
-	String findByCorrelationId(String id);
+	Task findByCorrelationId(String id);
 }

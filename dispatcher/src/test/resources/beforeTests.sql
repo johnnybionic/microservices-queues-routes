@@ -1,7 +1,7 @@
 insert into task (id, name, delay_period) values (1L, 'Task one', 5000);
 insert into task (id, name, cron_expression, state) values (2L, 'Task two', '0/5***', 'IDLE');
-insert into task (id, name, cron_expression, state) values (3L, 'Task three', '0/5***', 'WAITING');
-insert into task (id, name, cron_expression, state, last_accessed) values (4L, 'Task four', '0/5***', 'WAITING', {ts '2016-08-31 15:06:52.69'});
+insert into task (id, name, cron_expression, state) values (3L, 'Task three', '0/5***', 'RUNNING');
+insert into task (id, name, cron_expression, state, last_accessed) values (4L, 'Task four', '0/5***', 'RUNNING', {ts '2016-08-31 15:06:52.69'});
 
 insert into task_history values (1L, 'Started');
 

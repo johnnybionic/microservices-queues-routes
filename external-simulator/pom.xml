@@ -64,14 +64,16 @@
 		</dependency>
 
 		<!-- causes conflicts with Spring Boot dependencies. And can't use exclusions 
-			cos of 'shading'. Why oh why oh why... -->
+			cos of 'shading'. Why oh why oh why... 
+			- in the end, not needed as Spring provides it all 
 		<dependency>
 			<groupId>org.apache.activemq</groupId>
 			<artifactId>activemq-all</artifactId>
 			<version>5.8.0</version>
 		</dependency>
-
-		<dependency>
+ -->
+ 
+ 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jms</artifactId>
 		</dependency>
@@ -92,7 +94,15 @@
 			<artifactId>json-path</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
+
+		<dependency>
+			<groupId>javax.jms</groupId>
+			<artifactId>jms-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.activemq</groupId>
+			<artifactId>activemq-console</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>

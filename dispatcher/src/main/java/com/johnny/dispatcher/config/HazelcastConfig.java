@@ -1,29 +1,29 @@
 package com.johnny.dispatcher.config;
 
+import com.hazelcast.client.HazelcastClient;
+import com.hazelcast.client.config.ClientConfig;
+import com.hazelcast.config.GroupConfig;
+import com.hazelcast.core.HazelcastInstance;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
-import com.hazelcast.client.HazelcastClient;
-import com.hazelcast.client.config.ClientConfig;
-import com.hazelcast.client.config.ClientNetworkConfig;
-import com.hazelcast.config.GroupConfig;
-import com.hazelcast.core.HazelcastInstance;
-
 @Configuration
-@Profile("!junit") // a separate configuration is used for tests, see equivalent class
+// a separate configuration is used for tests, see equivalent class
+@Profile("!junit")
 public class HazelcastConfig {
 
-	private ApplicationConfig applicationConfig;
+    private ApplicationConfig applicationConfig;
 
-	@Autowired
-	public HazelcastConfig(ApplicationConfig applicationConfig) {
-		this.applicationConfig = applicationConfig;
-	}
+    @Autowired
+    public HazelcastConfig(final ApplicationConfig applicationConfig) {
+        this.applicationConfig = applicationConfig;
+    }
 
-	@Bean
-	public HazelcastInstance hazelcastInstance() {
+    @Bean
+    public HazelcastInstance hazelcastInstance() {
         ClientConfig clientConfig = new ClientConfig();
         clientConfig.getNetworkConfig().addAddress(applicationConfig.getHazelcasetServerAddress());
 
@@ -33,5 +33,5 @@ public class HazelcastConfig {
 
         HazelcastInstance instance = HazelcastClient.newHazelcastClient(clientConfig);
         return instance;
-	}
+    }
 }

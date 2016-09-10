@@ -13,11 +13,8 @@ import org.springframework.core.env.Environment;
 @Configuration
 public class EnvironmentConfig implements EnvironmentAware {
 
-	private Environment environment;
-
-	@Override
-	public void setEnvironment(Environment environment) {
-		this.environment = environment;
-	}
+    @Override
+    public void setEnvironment(final Environment environment) {
+    }
 
 }

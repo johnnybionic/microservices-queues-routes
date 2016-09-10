@@ -33,7 +33,7 @@ public class MessageServiceTest {
 	private static final String IDENTIFIER = "corr-id-1";
 
 	@InjectMocks
-	private DefaultMessageService service;
+	private MessageServiceJms service;
 	
 	@Mock
 	private JmsTemplate jmsTemplate;

@@ -8,5 +8,5 @@ package com.johnny.dispatcher.service;
  */
 public interface CorrelationIdService {
 
-	String getCorrelationId();
+	String getCorrelationId(Long taskId);
 }

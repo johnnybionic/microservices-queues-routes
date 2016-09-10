@@ -11,9 +11,9 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 /**
- * Represents a request from another system. It includes
- * a 'claim check', which is the other's service identifier for 
- * the request. This must be returned, along with the requested document.
+ * Represents a request from another system. It includes a 'claim check', which
+ * is the other's service identifier for the request. This must be returned,
+ * along with the requested document.
  * 
  * @author johnny
  *
@@ -21,13 +21,13 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 // for Jackson (doesn't care that's it private ...)
-@NoArgsConstructor(access=AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 @EqualsAndHashCode
 // to allow for XML as well as JSON responses
 @XmlRootElement
 public class DocumentRequest {
 
-	String identifier;
-	Document document;
-	Map<String, String> attributes;
+    private String identifier;
+    private Document document;
+    private Map<String, String> attributes;
 }

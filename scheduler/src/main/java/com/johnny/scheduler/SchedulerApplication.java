@@ -4,9 +4,18 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SchedulerApplication {
+public final class SchedulerApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(SchedulerApplication.class, args);
-	}
+    /**
+     * Main entry point.
+     * 
+     * @param args command-line
+     */
+    public static void main(final String[] args) {
+        SpringApplication.run(SchedulerApplication.class, args);
+    }
+
+    private SchedulerApplication() {
+    }
+
 }

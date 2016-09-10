@@ -1,5 +1,9 @@
 package com.johnny.external.controller;
 
+import com.johnny.external.domain.Document;
+import com.johnny.external.exception.DocumentNotFoundException;
+import com.johnny.external.service.DocumentService;
+
 import java.io.IOException;
 import java.util.Collection;
 
@@ -13,10 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.johnny.external.domain.Document;
-import com.johnny.external.exception.DocumentNotFoundException;
-import com.johnny.external.service.DocumentService;
-
 /**
  * 
  * The {@link Document} class is annotated with @XmlRootElement. Use
@@ -29,38 +29,58 @@ import com.johnny.external.service.DocumentService;
 @RequestMapping("/documents")
 public class DocumentController {
 
-	@Autowired
-	private DocumentService documentService;
-	
-	@RequestMapping(path = "/{id}", method = RequestMethod.GET)
-	public Document getDocumentById(@PathVariable Long id) {
-		
-		Document document = documentService.findDocument(id);
-		return document;
-	}
+    @Autowired
+    private DocumentService documentService;
 
-	@RequestMapping(method = RequestMethod.GET)
-	public Collection<Document> getAllDocuments() {
-		
-		Collection<Document> documents = documentService.findAllDocuments();
-		return documents;
-	}
+    /**
+     * Retrieve a document by its ID.
+     * 
+     * @param id the ID
+     * @return the document, else null.
+     */
+    @RequestMapping(path = "/{id}", method = RequestMethod.GET)
+    public final Document getDocumentById(@PathVariable final Long id) {
 
-	@RequestMapping(path = "/title/{title}", method = RequestMethod.GET)
-	public Document getDocumentByTitle(@PathVariable String title) {
-		
-		Document document = documentService.findDocumentByTitle(title);
-		return document;
-	}
+        Document document = documentService.findDocument(id);
+        return document;
+    }
 
-	/**
-	 * Controller-specific handler
+    /**
+     * Retrieve all documents.
+     * 
+     * @return a collection of documents
+     */
+    @RequestMapping(method = RequestMethod.GET)
+    public final Collection<Document> getAllDocuments() {
 
-	 * @throws IOException 
-	 */
-	@ExceptionHandler(DocumentNotFoundException.class)
-	public void documentNotFoundExceptionHandler(DocumentNotFoundException exception, HttpServletResponse response) throws IOException {
-		response.sendError(HttpStatus.NOT_FOUND.value(), exception.getMessage());
-	}
+        Collection<Document> documents = documentService.findAllDocuments();
+        return documents;
+    }
+
+    /**
+     * Retrieve a document by its title.
+     * 
+     * @param title the title
+     * @return the document, else null
+     */
+    @RequestMapping(path = "/title/{title}", method = RequestMethod.GET)
+    public final Document getDocumentByTitle(@PathVariable final String title) {
+
+        Document document = documentService.findDocumentByTitle(title);
+        return document;
+    }
+
+    /**
+     * Controller-specific handler.
+     * 
+     * @param exception the exception that occurred
+     * @param response the current {@link HttpServletResponse}
+     * @throws IOException in case things go really bad
+     */
+    @ExceptionHandler(DocumentNotFoundException.class)
+    public final void documentNotFoundExceptionHandler(final DocumentNotFoundException exception,
+            final HttpServletResponse response) throws IOException {
+        response.sendError(HttpStatus.NOT_FOUND.value(), exception.getMessage());
+    }
 
 }

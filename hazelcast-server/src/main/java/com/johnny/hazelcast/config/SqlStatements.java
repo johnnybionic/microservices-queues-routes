@@ -9,9 +9,9 @@ import lombok.Getter;
 /**
  * Allows SQL statements to be loaded from external configuration.
  * 
- * @ConfigurationProperties doesn't allow the configuration to be stored anywhere than
- * application.properties, which is a shame, so there's a lot of @Value annotations - 
- * at least Lombok keeps it small :) 
+ * ConfigurationProperties doesn't allow the configuration to be stored anywhere
+ * than application.properties, which is a shame, so there's a lot of @Value
+ * annotations - at least Lombok keeps it small :)
  * 
  * @author johnny
  *
@@ -21,46 +21,46 @@ import lombok.Getter;
 @PropertySource("classpath:sql-statements-${db.target:mysql}.properties")
 public class SqlStatements {
 
-	@Value("${map.insert}")
-	private String mapInsert;
-	
-	@Value("${map.select.single}")
-	private String mapSelectSingle;
-	
-	@Value("${map.select.all}")
-	private String mapSelectAll;
+    @Value("${map.insert}")
+    private String mapInsert;
 
-	@Value("${map.delete}")
-	private String mapDelete;
+    @Value("${map.select.single}")
+    private String mapSelectSingle;
 
-	@Value("${queue.insert}")
-	private String queueInsert;
+    @Value("${map.select.all}")
+    private String mapSelectAll;
 
-	@Value("${queue.delete}")
-	private String queueDelete;
+    @Value("${map.delete}")
+    private String mapDelete;
 
-	@Value("${queue.delete.keys}")
-	private String queueDeleteKeys;
+    @Value("${queue.insert}")
+    private String queueInsert;
 
-	@Value("${queue.select}")
-	private String queueSelect;
+    @Value("${queue.delete}")
+    private String queueDelete;
 
-	@Value("${queue.select.keys}")
-	private String queueSelectKeys;
+    @Value("${queue.delete.keys}")
+    private String queueDeleteKeys;
 
-	@Value("${queue.select.all}")
-	private String queueSelectAll;
+    @Value("${queue.select}")
+    private String queueSelect;
 
-	@Value("${queue.key}")
-	private String queueKey;
-	
-	@Value("${queue.item}")
-	private String queueItem;
+    @Value("${queue.select.keys}")
+    private String queueSelectKeys;
 
-	@Value("${queue.table}")
-	private String queueTable;
+    @Value("${queue.select.all}")
+    private String queueSelectAll;
 
-	@Value("${queue.name}")
-	private String queueName;
+    @Value("${queue.key}")
+    private String queueKey;
+
+    @Value("${queue.item}")
+    private String queueItem;
+
+    @Value("${queue.table}")
+    private String queueTable;
+
+    @Value("${queue.name}")
+    private String queueName;
 
 }
