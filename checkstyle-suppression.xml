@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE suppressions PUBLIC
+    "-//Puppy Crawl//DTD Suppressions 1.1//EN"
+    "suppressions_1_1.dtd">
+
+<suppressions>
+	<!-- suppress everything in test packages    -->
+    <suppress checks="[a-zA-Z0-9]*" files="[\\/]test[\\/]"/>
+    
+    <!-- suppress class-level JavaDoc warning on CRUD repositories -->
+    <suppress checks="JavadocType" files=".*Dao.java"/>
+
+    <!-- suppress class-level JavaDoc warning on main application classes -->
+    <suppress checks="JavadocType" files=".*Application.java"/>
+
+</suppressions>
