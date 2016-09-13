@@ -11,6 +11,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Default implementation.
+ * 
+ * @author johnny
+ *
+ */
 @Service
 @Slf4j
 @Transactional
@@ -57,25 +63,36 @@ public class RunTaskServiceDefault implements RunTaskService {
         }
     }
 
+    /**
+     * Common functionality.
+     * 
+     * @param task the {@link Task} to mark as complete
+     */
     private void markAsComplete(final Task task) {
         log.info("Marking task '{}' with correlation ID '{}' as complete", task.getId(), task.getCorrelationId());
         task.reset();
     }
 
+    /**
+     * Determine if the task is running.
+     * 
+     * @param task the {@link Task}
+     * @return true if running, else false.
+     */
     private boolean isRunning(final Task task) {
         if (task.isTimedOut()) {
             // don't do anything - the task timed out waiting for this response,
-            // so
-            // something needs to be looked into
+            // so something needs to be looked into. An alert should be raised.
             log.warn("Tried to mark a timed out task with id {} as complete", task.getId());
         }
 
         return task.isRunning();
     }
 
-    /*
-     * Run the task
+    /**
+     * Run the task.
      * 
+     * @param task the {@link Task} to run.
      */
     private void runTask(final Task task) {
 
@@ -100,10 +117,22 @@ public class RunTaskServiceDefault implements RunTaskService {
         task.addHistory("Task message sent");
     }
 
+    /**
+     * Is the task runnable?
+     * 
+     * @param task the {@link Task}
+     * @return true if the task is eligible to run
+     */
     private boolean isRunnable(final Task task) {
-        return !suspended(task) && !waiting(task) && !timedOut(task) && hasEntry(task);
+        return !suspended(task) && !isWaiting(task) && !timedOut(task) && hasEntry(task);
     }
 
+    /**
+     * Is the task suspended?
+     * 
+     * @param task the {@link Task}
+     * @return true if suspended, else false.
+     */
     private boolean suspended(final Task task) {
         if (task.isSuspended()) {
             log.debug("Task '{}' with id {} ignored as it is suspended", task.getName(), task.getId());
@@ -113,12 +142,24 @@ public class RunTaskServiceDefault implements RunTaskService {
         return false;
     }
 
+    /**
+     * Does the task have a pending action?
+     * 
+     * @param task the {@link Task} to check
+     * @return true if there's an action waiting, else false
+     */
     private boolean hasEntry(final Task task) {
         final boolean hasEntry = queueService.hasEntry(task.getSourceQueue());
         log.debug("hasEntry() for '{}' returned {}", task.getSourceQueue(), hasEntry);
         return hasEntry;
     }
 
+    /**
+     * Has the task timed out, waiting for a response?
+     * 
+     * @param task the {@link Task}
+     * @return true if timed out, else false
+     */
     private boolean timedOut(final Task task) {
         if (task.isTimedOut()) {
             final String message = String.format("Task [%s] not run as it has timed out", task.getName());
@@ -129,7 +170,14 @@ public class RunTaskServiceDefault implements RunTaskService {
         return false;
     }
 
-    private boolean waiting(final Task task) {
+    /**
+     * Is the task waiting for a response? If so, update the number of attempts,
+     * and add to the history.
+     * 
+     * @param task the {@link Task}
+     * @return true if waiting, else false
+     */
+    private boolean isWaiting(final Task task) {
 
         if (task.isRunning()) {
             task.updateCurrentAttempt();

@@ -8,6 +8,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+/**
+ * Default implementation.
+ * 
+ * @author johnny
+ *
+ */
 @Service("defaultDocumentService")
 public class DocumentServiceImpl implements DocumentService {
 

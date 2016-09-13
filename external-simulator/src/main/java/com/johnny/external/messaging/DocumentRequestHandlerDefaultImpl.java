@@ -16,6 +16,12 @@ import org.springframework.jms.core.MessageCreator;
 import org.springframework.jms.support.converter.MessageConverter;
 import org.springframework.stereotype.Service;
 
+/**
+ * Default implementation to process a document request.
+ * 
+ * @author johnny
+ *
+ */
 @Service
 @Profile({ "default", "junit", "apollo", "demo" })
 public class DocumentRequestHandlerDefaultImpl implements DocumentRequestHandler {

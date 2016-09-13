@@ -10,5 +10,11 @@ package com.johnny.dispatcher.service;
  */
 public interface NextCorrelationId {
 
-	String nextValue(String current);
+    /**
+     * Get the next value.
+     * 
+     * @param current the current value
+     * @return the next value
+     */
+    String nextValue(String current);
 }

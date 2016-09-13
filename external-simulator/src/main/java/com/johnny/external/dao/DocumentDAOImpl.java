@@ -173,7 +173,8 @@ public class DocumentDAOImpl implements DocumentDAO {
     public Long count() {
         long count = 0;
 
-        try (Connection connection = dataSource.getConnection(); Statement statement = connection.createStatement()) {
+        try (Connection connection = dataSource.getConnection();
+                Statement statement = connection.createStatement()) {
 
             final ResultSet resultSet = statement
                     .executeQuery("SELECT COUNT(*) AS rowcount FROM " + DOCUMENT_TABLE_NAME);
@@ -188,6 +189,13 @@ public class DocumentDAOImpl implements DocumentDAO {
         return count;
     }
 
+    /**
+     * Create a {@link Document} from a ResultSet.
+     * 
+     * @param resultSet the current results
+     * @return a new {@link Document}
+     * @throws SQLException in case of error
+     */
     private Document resultSetToDocument(final ResultSet resultSet) throws SQLException {
         return new Document(resultSet.getLong(ID_COLUMN_NAME), resultSet.getString(TITLE_COLUMN_NAME),
                 resultSet.getString(CONTENT_COLUMN_NAME));

@@ -2,8 +2,6 @@ package com.johnny.dispatcher.domain;
 
 import com.johnny.dispatcher.service.RunTaskService;
 
-import lombok.extern.slf4j.Slf4j;
-
 /**
  * Could just make Task runnable ...
  * 
@@ -12,12 +10,11 @@ import lombok.extern.slf4j.Slf4j;
  * @author johnny
  *
  */
-@Slf4j
 public class RunnableTask implements Runnable {
 
-    private Long taskId;
+    private final Long taskId;
 
-    private RunTaskService runTaskService;
+    private final RunTaskService runTaskService;
 
     public RunnableTask(final Long taskId, final RunTaskService runTaskService) {
         this.taskId = taskId;

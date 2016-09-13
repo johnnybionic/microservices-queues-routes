@@ -10,6 +10,12 @@ import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Defines storage for a map that uses Strings for keys and values.
+ * 
+ * @author johnny
+ *
+ */
 @Slf4j
 @Service
 public class MySQLMapStoreFactory implements MapStoreFactory<String, String> {

@@ -22,8 +22,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/message")
 public class MessageController {
 
-    private JmsTemplate jmsTemplate;
-    private MessageConverter converter;
+    private final JmsTemplate jmsTemplate;
+    private final MessageConverter converter;
 
     @Value("${document.queue.request}")
     private String documentRequestQueue;
@@ -34,12 +34,17 @@ public class MessageController {
         this.converter = converter;
     }
 
+    /**
+     * Send x number of messages.
+     * 
+     * @param amount the number to send
+     */
     @RequestMapping("/send/{amount}")
     public void sendMessages(@PathVariable final Long amount) {
-        Document document = new Document(1L, null, null);
-        DocumentRequest documentRequest = new DocumentRequest("1", document, null);
+        final Document document = new Document(1L, null, null);
+        final DocumentRequest documentRequest = new DocumentRequest("1", document, null);
 
-        MessageCreator messageCreator = (session) -> {
+        final MessageCreator messageCreator = (session) -> {
             return converter.toMessage(documentRequest, session);
         };
 

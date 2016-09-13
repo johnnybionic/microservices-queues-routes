@@ -5,6 +5,10 @@ A ReST interface is also available.
 
 Uses native JDBC for data access.
 
+Default port is 8010
+
+Use http://localhost:8010/actuator to list the available Spring Actuator endpoints.
+
 # points of interest
 
 The module can use either ActiveMQ (default Spring profile) or ApolloMQ ("apollo" Spring profile). There

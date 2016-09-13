@@ -34,24 +34,49 @@ public class ServiceController {
         this.queueService = queueService;
     }
 
+    /**
+     * Find all map entries.
+     * 
+     * @return the entries
+     */
     @RequestMapping("map")
     public Map<String, String> findAllMap() {
         log.info("Finding all map entries");
         return mapService.findAll();
     }
 
+    /**
+     * Find all entries for a queue. Note that the queue has a format that
+     * Spring can confuse as a file name, hence the ".+" qualification.
+     * 
+     * @param queueName the name of the queue
+     * @return a map of the queue's entries
+     */
     @RequestMapping("queue/{queueName:.+}")
     public Map<Long, String> findAllQueue(@PathVariable final String queueName) {
         log.info("Finding all queue entries for {}", queueName);
         return queueService.findAll(queueName);
     }
 
+    /**
+     * Find a single map entry.
+     * 
+     * @param id the key
+     * @return the value
+     */
     @RequestMapping("map/{id}")
     public String findOneMap(@PathVariable final String id) {
         log.info("Finding map entry {} ", id);
         return mapService.findOne(id);
     }
 
+    /**
+     * Find a single entry for a queue.
+     * 
+     * @param queueName the name of the queue
+     * @param id the ID of the queue's entry
+     * @return the value
+     */
     @RequestMapping("queue/{queueName:.+}/{id}")
     public String findOneQueue(@PathVariable final String queueName, @PathVariable final Long id) {
         log.info("Finding queue entry {} for {}", id, queueName);

@@ -39,10 +39,10 @@ public class DocumentResponseActionSaveAsFile implements DocumentResponseAction 
     @Override
     public void perform(final DocumentRequest documentRequest) {
 
-        String name = getOutputName(documentRequest);
-        OutputStream outputStream = getOutputStream(name);
+        final String name = getOutputName(documentRequest);
+        final OutputStream outputStream = getOutputStream(name);
         if (outputStream != null) {
-            Document document = documentRequest.getDocument();
+            final Document document = documentRequest.getDocument();
 
             try {
                 if (document != null && document.getContent() != null) {
@@ -56,17 +56,23 @@ public class DocumentResponseActionSaveAsFile implements DocumentResponseAction 
                 outputStream.close();
 
             }
-            catch (IOException exception) {
+            catch (final IOException exception) {
                 log.error(exception.getMessage());
             }
         }
     }
 
+    /**
+     * Generate the output filename.
+     * 
+     * @param documentRequest the response.
+     * @return the filename
+     */
     private String getOutputName(final DocumentRequest documentRequest) {
         String title = NONE;
         String id = NONE;
 
-        Document document = documentRequest.getDocument();
+        final Document document = documentRequest.getDocument();
         if (document != null) {
             if (document.getTitle() != null) {
                 title = document.getTitle();
@@ -76,17 +82,27 @@ public class DocumentResponseActionSaveAsFile implements DocumentResponseAction 
             }
         }
 
-        return String.format(FILENAME_TEMPLATE, documentRequest.getIdentifier(), id, title);
+        final String fileName = String.format(FILENAME_TEMPLATE, documentRequest.getIdentifier(), id, title);
+        log.info("Generated filename [{}] for document with identifier [{}]", fileName,
+                documentRequest.getIdentifier());
+        return fileName;
     }
 
+    /**
+     * Get the output stream (file) for the given name. It can be overridden by
+     * tests to prevent writing to the file system.
+     * 
+     * @param name the name of the file to create
+     * @return the stream.
+     */
     protected OutputStream getOutputStream(final String name) {
-        Path path = Paths.get(outputFolder, name);
+        final Path path = Paths.get(outputFolder, name);
         try {
-            Path createFile = Files.createFile(path);
-            OutputStream out = new BufferedOutputStream(Files.newOutputStream(createFile));
+            final Path createFile = Files.createFile(path);
+            final OutputStream out = new BufferedOutputStream(Files.newOutputStream(createFile));
             return out;
         }
-        catch (IOException e) {
+        catch (final IOException e) {
             log.error(e.getMessage());
         }
 

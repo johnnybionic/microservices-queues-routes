@@ -3,7 +3,6 @@ package com.johnny.scheduler;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Profile;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -12,8 +11,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 @ActiveProfiles("junit")
 public class SchedulerApplicationTests {
 
-	@Test
-	public void contextLoads() {
-	}
+    @Test
+    public void contextLoads() {
+    }
 
 }

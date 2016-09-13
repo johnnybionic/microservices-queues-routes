@@ -14,10 +14,46 @@ import java.util.List;
 
 public interface GenericDAO<T> {
 
-	void add(T t);
-	T find(Long id);
-	List<T> findAll();
-	void update(T t);
-	void delete(T t);
-	Long count();
+    /**
+     * Add an entity.
+     * 
+     * @param t the entity to add
+     */
+    void add(T t);
+
+    /**
+     * Find by ID.
+     * 
+     * @param id the ID
+     * @return an entity, if found
+     */
+    T find(Long id);
+
+    /**
+     * Find all.
+     * 
+     * @return all entities.
+     */
+    List<T> findAll();
+
+    /**
+     * Update.
+     * 
+     * @param t the entity to update.
+     */
+    void update(T t);
+
+    /**
+     * Delete.
+     * 
+     * @param t the entity to delete
+     */
+    void delete(T t);
+
+    /**
+     * Count.
+     * 
+     * @return a count of the number of entries found for this entity.
+     */
+    Long count();
 }

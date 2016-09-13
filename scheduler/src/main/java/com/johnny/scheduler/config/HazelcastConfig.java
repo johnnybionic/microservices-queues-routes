@@ -10,6 +10,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
+/**
+ * Configuration of the Hazelcast client.
+ * 
+ * @author johnny
+ *
+ */
 @Configuration
 @Profile("!junit")
 public class HazelcastConfig {
@@ -21,6 +27,11 @@ public class HazelcastConfig {
         this.applicationConfig = applicationConfig;
     }
 
+    /**
+     * Get an instance of Hazelcast, in this case a client.
+     * 
+     * @return the instance
+     */
     @Bean
     public HazelcastInstance hazelcastInstance() {
         final ClientConfig clientConfig = new ClientConfig();

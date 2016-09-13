@@ -13,8 +13,19 @@ import java.util.Map;
  */
 public interface MapService<K, V> {
 
+    /**
+     * Find all.
+     * 
+     * @return everything
+     */
     Map<K, V> findAll();
 
+    /**
+     * Find one.
+     * 
+     * @param id the key
+     * @return the value
+     */
     V findOne(K id);
 
 }

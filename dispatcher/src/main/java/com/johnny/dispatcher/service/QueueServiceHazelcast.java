@@ -12,6 +12,12 @@ import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Hazelcast implementation.
+ * 
+ * @author johnny
+ *
+ */
 @Slf4j
 @Service
 public class QueueServiceHazelcast implements QueueService {

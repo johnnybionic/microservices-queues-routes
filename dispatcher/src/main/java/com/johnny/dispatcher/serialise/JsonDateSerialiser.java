@@ -17,12 +17,12 @@ import java.util.Date;
  */
 public class JsonDateSerialiser extends JsonSerializer<Date> {
 
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SS");
-
     @Override
     public final void serialize(final Date value, final JsonGenerator gen, final SerializerProvider serializers)
             throws IOException, JsonProcessingException {
-        String formattedDate = DATE_FORMAT.format(value);
+        // using a static format gets marked as not threadsafe. Doubt it will be
+        // a problem, but anyway ...
+        final String formattedDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SS").format(value);
         gen.writeString(formattedDate);
     }
 

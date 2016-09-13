@@ -35,6 +35,16 @@ public class CorrelationIdServiceHazelcast implements CorrelationIdService {
         this.hazelcastInstance = hazelcastInstance;
     }
 
+    /**
+     * Retrieves the correlation ID and increments the stored value. TODO:
+     * Perhaps that should be two distinct steps? Might want to retrieve the
+     * correlation ID multiple times. Also, this method should be made
+     * thread-safe, as the taskID is not used (there is a change two tasks could
+     * call concurrently).
+     * 
+     * @param taskId the task ID. It's not currently used
+     * @return the id
+     */
     @Override
     public String getCorrelationId(final Long taskId) {
         final IMap<String, String> map = hazelcastInstance.getMap(CORRELATION_ID_MAP_NAME);
@@ -45,9 +55,11 @@ public class CorrelationIdServiceHazelcast implements CorrelationIdService {
         // but it might not have the entry yet
         String retVal = map.get(CORRELATION_ID_MAP_KEY);
         if (retVal == null) {
+            log.debug("Initial value used");
             retVal = INITIAL_CORRELATION_ID;
         }
 
+        log.info("Retrieving correlation ID '{}' for task '{}'", retVal, taskId);
         map.put(CORRELATION_ID_MAP_KEY, nextCorrelationId.nextValue(retVal));
         return retVal;
     }
