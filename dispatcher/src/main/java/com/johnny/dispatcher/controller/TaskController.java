@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * A simple controller to retrieve all tasks.
  * 
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author johnny
  *
  */
+@Slf4j
 @RestController
 @RequestMapping("task")
 public class TaskController {
@@ -36,6 +39,7 @@ public class TaskController {
      */
     @RequestMapping("all")
     public Collection<Task> getAll() {
+        log.info("Getting all");
         return taskService.findAll();
     }
 
@@ -46,6 +50,7 @@ public class TaskController {
      */
     @RequestMapping("reset/{id}")
     public void reset(@PathVariable final Long id) {
+        log.info("Resetting {}", id);
         taskService.reset(id);
     }
 
@@ -57,6 +62,7 @@ public class TaskController {
      */
     @RequestMapping("suspend/{id}/{action}")
     public void suspend(@PathVariable final Long id, @PathVariable final Boolean action) {
+        log.info("Suspending {} - {}", id, action);
         taskService.suspend(id, action);
     }
 }
