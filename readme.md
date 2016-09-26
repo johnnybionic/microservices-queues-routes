@@ -1,4 +1,7 @@
+
 # hazelcast-spring-microservices
+
+[![Build status](https://travis-ci.org/johnnybionic/microservices-queues-routes.svg?branch=master)](https://travis-ci.org/johnnybionic/microservices-queues-routes)
 
 A collection of Spring Boot microservices that show how services can be decoupled and interact 
 asynchronously using Hazelcast queues, ActiveMQ/Apollo queues and ReST.
