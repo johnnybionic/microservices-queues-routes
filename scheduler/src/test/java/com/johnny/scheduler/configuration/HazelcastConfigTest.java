@@ -10,6 +10,7 @@ import com.johnny.scheduler.config.ApplicationConfig;
 import com.johnny.scheduler.config.HazelcastConfig;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,7 @@ public class HazelcastConfigTest {
     }
 
     @Test
+    @Ignore
     public void thatInstanceIsCreatedWithValuesFromApplicationConfig() {
 
         // creates an in-memory server
