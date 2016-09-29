@@ -17,12 +17,16 @@ import org.apache.camel.CamelContext;
 import org.apache.camel.builder.RouteBuilder;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @SpringBootTest
+@ActiveProfiles("junit")
+@RunWith(SpringJUnit4ClassRunner.class)
 public class QuartzTaskConfigurationTest {
 
     private static final String NAME = "name";
@@ -40,7 +44,7 @@ public class QuartzTaskConfigurationTest {
 
     @Before
     public void startUp() {
-        MockitoAnnotations.initMocks(this);
+        // MockitoAnnotations.initMocks(this);
     }
 
     @Test
