@@ -1,6 +1,7 @@
 package com.johnny.scheduler.configuration;
 
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -58,6 +59,33 @@ public class QuartzTaskConfigurationTest {
 
         verify(dao).findAll();
         verify(camelContext, times((int) numberOfRoutes)).addRoutes(any(RouteBuilder.class));
+    }
+
+    /**
+     * addRoutes() throws raw {@link Exception}.
+     * 
+     * Nothing happens other than a log of the error. Not what would happen in
+     * the Real World :)
+     * 
+     * @throws Exception
+     */
+    @Test
+    public void thatExceptionIsHandled() throws Exception {
+
+        final Collection<ScheduledTask> list = new LinkedList<>();
+        final long numberOfRoutes = 3;
+        for (long counter = 0; counter < numberOfRoutes; counter++) {
+            list.add(getScheduleTask(counter + 1));
+        }
+
+        when(dao.count()).thenReturn(numberOfRoutes);
+        when(dao.findAll()).thenReturn(list);
+        doThrow(new Exception()).when(camelContext).addRoutes(any());
+
+        configuration.setUp();
+
+        verify(dao).findAll();
+
     }
 
     private ScheduledTask getScheduleTask(final Long id) {

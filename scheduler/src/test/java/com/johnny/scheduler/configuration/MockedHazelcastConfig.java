@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Profile;
 
 @Configuration
 @Profile("junit")
-public class HazelcastConfig {
+public class MockedHazelcastConfig {
 
     @Bean
     public HazelcastInstance hazelcastInstance() {

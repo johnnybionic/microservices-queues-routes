@@ -12,8 +12,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Represents a scheduled task, which fires one or more requests. 
-
+ * Represents a scheduled task, which fires one or more requests.
+ * 
  * @author johnny
  *
  */
@@ -23,15 +23,21 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ScheduledTask {
 
-	@Id
-	private Long id;
-	
-	private String name;
-	
-	private String cron;
-	
-	private String comments;
-	
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "scheduledTask")
-	private List<TaskRequest> requests;
+    @Id
+    private Long id;
+
+    private String name;
+
+    private String cron;
+
+    private String comments;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "scheduledTask")
+    private List<TaskRequest> requests;
+
+    @Override
+    public String toString() {
+        return "ScheduledTask [id=" + id + ", name=" + name + ", cron=" + cron + ", comments=" + comments;
+    }
+
 }

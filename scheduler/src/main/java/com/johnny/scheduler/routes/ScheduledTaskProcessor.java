@@ -3,7 +3,9 @@ package com.johnny.scheduler.routes;
 import com.hazelcast.core.HazelcastInstance;
 import com.johnny.scheduler.dao.ScheduledTaskDao;
 import com.johnny.scheduler.domain.ScheduledTask;
+import com.johnny.scheduler.domain.TaskRequest;
 
+import java.util.List;
 import java.util.Queue;
 
 import javax.transaction.Transactional;
@@ -46,13 +48,13 @@ public class ScheduledTaskProcessor implements Processor {
         log.info("Received trigger for [{}]", triggerName);
 
         final ScheduledTask findByName = dao.findByName(triggerName);
-        // TODO: won't this throw an exception before getting here?
         if (findByName != null) {
-            if (findByName.getRequests() == null || findByName.getRequests().size() == 0) {
+            List<TaskRequest> requests = findByName.getRequests();
+            if (requests == null || requests.size() == 0) {
                 log.warn("{} has no requests, ignoring", findByName);
             }
             else {
-                findByName.getRequests().forEach(request -> {
+                requests.forEach(request -> {
                     final Queue<String> queue = hazelcastInstance.getQueue(request.getQueue());
                     queue.add(request.getDocument());
                 });

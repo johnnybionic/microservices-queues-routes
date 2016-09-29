@@ -3,6 +3,7 @@ package com.johnny.scheduler.routes;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import com.hazelcast.core.HazelcastInstance;
@@ -41,7 +42,7 @@ public class ScheduledTaskProcessorTest {
     @Mock
     private ScheduledTaskDao dao;
 
-    /* this is supplied by a configuration class */
+    /* this is supplied by a mock configuration class */
     @Autowired
     private HazelcastInstance hazelcastInstance;
 
@@ -80,6 +81,65 @@ public class ScheduledTaskProcessorTest {
         verify(dao).findByName(TEST_TRIGGER_NAME);
         verify(hazelcastInstance, times(3)).getQueue(anyString());
         verify(queue, times(3)).add(anyString());
+    }
+
+    @Test
+    public void thatNothingHappensIfThereIsNoTask() throws Exception {
+
+        final Exchange exchange = new DefaultExchange(camelContext);
+        final DefaultMessage defaultMessage = new DefaultMessage();
+        defaultMessage.setHeader(ScheduledTaskProcessor.TRIGGER_NAME, TEST_TRIGGER_NAME);
+
+        final List<TaskRequest> requests = new LinkedList<>();
+        final ScheduledTask scheduledTask = new ScheduledTask(0L, null, null, null, requests);
+        for (long counter = 1; counter < 4; counter++) {
+            requests.add(new TaskRequest(counter, scheduledTask, "name" + counter, "document" + counter,
+                    "queue." + counter));
+        }
+
+        when(dao.findByName(TEST_TRIGGER_NAME)).thenReturn(null);
+
+        exchange.setIn(defaultMessage);
+        processor.process(exchange);
+
+        verify(dao).findByName(TEST_TRIGGER_NAME);
+        verifyZeroInteractions(queue);
+    }
+
+    @Test
+    public void thatNothingHappensIfThereAreNoEntries() throws Exception {
+
+        final Exchange exchange = new DefaultExchange(camelContext);
+        final DefaultMessage defaultMessage = new DefaultMessage();
+        defaultMessage.setHeader(ScheduledTaskProcessor.TRIGGER_NAME, TEST_TRIGGER_NAME);
+
+        final ScheduledTask scheduledTask = new ScheduledTask(0L, null, null, null, null);
+
+        when(dao.findByName(TEST_TRIGGER_NAME)).thenReturn(scheduledTask);
+
+        exchange.setIn(defaultMessage);
+        processor.process(exchange);
+
+        verify(dao).findByName(TEST_TRIGGER_NAME);
+        verifyZeroInteractions(queue);
+    }
+
+    @Test
+    public void thatNothingHappensIfThereAreZeroEntries() throws Exception {
+
+        final Exchange exchange = new DefaultExchange(camelContext);
+        final DefaultMessage defaultMessage = new DefaultMessage();
+        defaultMessage.setHeader(ScheduledTaskProcessor.TRIGGER_NAME, TEST_TRIGGER_NAME);
+
+        final ScheduledTask scheduledTask = new ScheduledTask(0L, null, null, null, new LinkedList<>());
+
+        when(dao.findByName(TEST_TRIGGER_NAME)).thenReturn(scheduledTask);
+
+        exchange.setIn(defaultMessage);
+        processor.process(exchange);
+
+        verify(dao).findByName(TEST_TRIGGER_NAME);
+        verifyZeroInteractions(queue);
     }
 
 }
