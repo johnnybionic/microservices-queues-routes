@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -137,12 +138,29 @@ public class MySQLQueueStoreTest {
     }
 
     @Test
+    public void whenNonExistingEntryIsDeleted() {
+        assertNull(store.load(99L));
+        store.delete(99L);
+        assertThat(getTotalCount()).isEqualTo(QUEUE_1_COUNT + OTHER_QUEUE__COUNT);
+        assertNull(store.load(99L));
+    }
+
+    @Test
     public void thatAllEntriesAreDeleted() {
         final Collection<Long> keys = Arrays.asList(1L, 2L);
         store.deleteAll(keys);
 
         assertThat(getTotalCount()).isEqualTo(OTHER_QUEUE__COUNT);
         assertThat(getQueue1Count()).isEqualTo(0);
+    }
+
+    @Test
+    public void whenNonExistingEntriesAreDeleted() {
+        final Collection<Long> keys = Arrays.asList(101L, 102L);
+        store.deleteAll(keys);
+
+        assertThat(getTotalCount()).isEqualTo(QUEUE_1_COUNT + OTHER_QUEUE__COUNT);
+        assertThat(getQueue1Count()).isEqualTo(2);
     }
 
     @Test

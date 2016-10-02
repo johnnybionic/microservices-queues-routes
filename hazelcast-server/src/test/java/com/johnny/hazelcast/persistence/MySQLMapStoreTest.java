@@ -46,6 +46,7 @@ public class MySQLMapStoreTest {
     private static final String NEW_KEY = "9.9";
     private static final String NEW_VALUE = "ninety-nine";
     private static final String NEW_VALUE_UPSERT = "one-hundred-and-eighty!!";
+    private static final String NON_EXISTENT_KEY = "se7en";
 
     @Autowired
     private MySQLMapStore store;
@@ -55,26 +56,35 @@ public class MySQLMapStoreTest {
 
     @Test
     public void thatLoadSinglePairWorks() {
-        String value = store.load(TEST_KEY);
+        final String value = store.load(TEST_KEY);
         assertEquals(TEST_VALUE, value);
+    }
+
+    /*
+     * Instead of an exception, null is returned.
+     */
+    @Test
+    public void whenKeyDoesNotExistThenNullReturned() {
+        final String value = store.load(NON_EXISTENT_KEY);
+        assertEquals(null, value);
     }
 
     @Test
     public void thatLoadAllPairsWorks() {
 
-        String[] keyArray = KEYS;
-        Collection<String> keys = Arrays.asList(keyArray);
-        Map<String, String> loadAll = store.loadAll(keys);
+        final String[] keyArray = KEYS;
+        final Collection<String> keys = Arrays.asList(keyArray);
+        final Map<String, String> loadAll = store.loadAll(keys);
         assertEquals(keyArray.length, loadAll.size());
     }
 
     @Test
     public void thatLoadAllKeysWorks() {
 
-        String[] keyArray = KEYS;
-        Collection<String> keys = new LinkedList<>(Arrays.asList(keyArray));
+        final String[] keyArray = KEYS;
+        final Collection<String> keys = new LinkedList<>(Arrays.asList(keyArray));
 
-        Iterable<String> allKeys = store.loadAllKeys();
+        final Iterable<String> allKeys = store.loadAllKeys();
         allKeys.forEach(key -> {
             assertTrue(keys.contains(key));
             keys.remove(key);
@@ -86,7 +96,7 @@ public class MySQLMapStoreTest {
     @Test
     public void thatSinglePairIsStored() {
 
-        Long count = getTotalCount();
+        final Long count = getTotalCount();
 
         store.store(NEW_KEY, NEW_VALUE);
 
@@ -96,13 +106,13 @@ public class MySQLMapStoreTest {
 
     @Test
     public void thatDuplicateKeyCausesUpsert() {
-        Long count = getTotalCount();
+        final Long count = getTotalCount();
 
         store.store(NEW_KEY, NEW_VALUE);
         store.store(NEW_KEY, NEW_VALUE_UPSERT);
 
         assertEquals((Long) (count + 1), getTotalCount());
-        String load = store.load(NEW_KEY);
+        final String load = store.load(NEW_KEY);
         assertNotNull(load);
         assertEquals(NEW_VALUE_UPSERT, load);
 
@@ -110,12 +120,12 @@ public class MySQLMapStoreTest {
 
     @Test
     public void thatCollectionOfPairsIsStored() {
-        Map<String, String> pairs = new HashMap<>();
+        final Map<String, String> pairs = new HashMap<>();
         Arrays.asList(KEYS).forEach(key -> {
             pairs.put(key + 100, key);
         });
 
-        Long count = getTotalCount();
+        final Long count = getTotalCount();
 
         store.storeAll(pairs);
 
@@ -125,7 +135,7 @@ public class MySQLMapStoreTest {
 
     @Test
     public void thatSinglePairIsDeleted() {
-        Long count = getTotalCount();
+        final Long count = getTotalCount();
 
         store.delete(TEST_KEY);
         assertEquals((Long) (count - 1), getTotalCount());
@@ -139,7 +149,7 @@ public class MySQLMapStoreTest {
     }
 
     private Long getTotalCount() {
-        Long rowCount = jdbcTemplate.queryForObject("SELECT COUNT(*) AS c FROM map_string_to_string", Long.class);
+        final Long rowCount = jdbcTemplate.queryForObject("SELECT COUNT(*) AS c FROM map_string_to_string", Long.class);
         return rowCount;
     }
 
