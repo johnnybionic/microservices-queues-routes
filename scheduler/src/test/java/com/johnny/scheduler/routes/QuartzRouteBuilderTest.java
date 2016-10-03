@@ -51,7 +51,7 @@ public class QuartzRouteBuilderTest {
         if (processor != null) {
             System.out.println("***** " + processor.isProcessCalled());
         }
-        assertTrue(processor.isProcessCalled());
+        assertTrue("Expected process to have been called", processor.isProcessCalled());
     }
 
     class TestProcessor implements Processor {
