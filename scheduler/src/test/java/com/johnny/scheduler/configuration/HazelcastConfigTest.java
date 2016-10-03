@@ -19,10 +19,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  * This test is to stop code coverage from complaining. It could be argued that
- * the configuration classes are excluded from test converage, unless they need
+ * the configuration classes are excluded from test coverage, unless they need
  * to access some external source where exceptions could be thrown.
  * 
- * Note: when the tests run, a mock Hazelcast configuration is used.
+ * Note: when other tests run that write to the queues, a mock Hazelcast
+ * configuration is used.
  * 
  * @author johnny
  *
@@ -43,8 +44,14 @@ public class HazelcastConfigTest {
         hazelcastConfig = new HazelcastConfig(applicationConfig);
     }
 
+    /**
+     * I don't think this test gives much value, but it shows how to create an
+     * embedded Hazelcast server. This module doesn't read and write from queues
+     * - it only writes - so a mock is sufficient for tests.
+     * 
+     * An embedded server would be useful for integration tests.
+     */
     @Test
-    // @Ignore
     public void thatInstanceIsCreatedWithValuesFromApplicationConfig() {
 
         // creates an in-memory server
@@ -59,6 +66,9 @@ public class HazelcastConfigTest {
 
         final HazelcastInstance hazelcastInstance = hazelcastConfig.hazelcastInstance();
         assertNotNull(hazelcastInstance);
+
+        hazelcastInstance.shutdown();
+        instance.shutdown();
     }
 
 }
