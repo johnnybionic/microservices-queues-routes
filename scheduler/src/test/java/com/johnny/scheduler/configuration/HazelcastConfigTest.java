@@ -10,6 +10,7 @@ import com.johnny.scheduler.config.ApplicationConfig;
 import com.johnny.scheduler.config.HazelcastConfig;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,8 +51,11 @@ public class HazelcastConfigTest {
      * - it only writes - so a mock is sufficient for tests.
      * 
      * An embedded server would be useful for integration tests.
+     * 
+     * This test seems to prevent successful testing on Travis
      */
     @Test
+    // @Ignore
     public void thatInstanceIsCreatedWithValuesFromApplicationConfig() {
 
         // creates an in-memory server
