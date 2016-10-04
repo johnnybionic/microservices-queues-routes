@@ -2,6 +2,7 @@
 # microservices-queues-routes
 
 [![Build status](https://travis-ci.org/johnnybionic/microservices-queues-routes.svg?branch=master)](https://travis-ci.org/johnnybionic/microservices-queues-routes)
+[![Coverage Status](https://coveralls.io/repos/github/johnnybionic/microservices-queues-routes/badge.svg?branch=master)](https://coveralls.io/github/johnnybionic/microservices-queues-routes?branch=master)
 
 A collection of Spring Boot microservices that show how services can be decoupled and interact 
 asynchronously using Hazelcast queues, ActiveMQ/Apollo queues, Camel and ReST.
