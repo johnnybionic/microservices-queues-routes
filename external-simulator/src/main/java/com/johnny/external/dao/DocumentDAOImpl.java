@@ -22,12 +22,18 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * An implementation that uses basic JDBC.
  * 
+ * In the Real World, this class would need to handle exceptions, instead of
+ * just logging them. There's no was to see if anything when wrong, and no way
+ * to test the exception handling, other than to see if there's coverage.
+ * 
+ * Note that JaCoCo coverage of all branches in try-with blocks seems not to be
+ * possible.
+ * 
  * @author johnny
  *
  */
 @Slf4j
 @Repository
-// @Profile("!junit")
 public class DocumentDAOImpl implements DocumentDAO {
 
     private static final int POSITION_3 = 3;
@@ -53,7 +59,7 @@ public class DocumentDAOImpl implements DocumentDAO {
 
             log.info("Adding document: {}", document);
 
-            // prepared statement doesn't need quotes, could be cached if
+            // prepared statement doesn't need quotes, and could be cached if
             // thread-safe
             final PreparedStatement preparedStatement = connection.prepareStatement(PREPARED_INSERT);
             preparedStatement.setLong(POSITION_1, document.getId());
@@ -64,6 +70,7 @@ public class DocumentDAOImpl implements DocumentDAO {
         }
         catch (final SQLException e) {
             log.error(e.getMessage());
+            // throw new RuntimeException("");
         }
 
     }

@@ -17,7 +17,8 @@ import org.springframework.jms.support.converter.MessageConverter;
 import org.springframework.stereotype.Component;
 
 import lombok.AccessLevel;
-import lombok.NoArgsConstructor;;
+import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;;
 
 /**
  * Converts a document request to and from JSON.
@@ -25,10 +26,11 @@ import lombok.NoArgsConstructor;;
  * @author johnny
  *
  */
-// @Profile({"default", "junit", "apollo"})
+
 @Component
 // don't allow 'new', as auto-wiring won't work
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Slf4j
 public class DocumentRequestConverter implements MessageConverter {
 
     private ObjectMapper mapper;
@@ -43,6 +45,8 @@ public class DocumentRequestConverter implements MessageConverter {
      */
     @Autowired
     public DocumentRequestConverter(final ObjectMapper mapper) {
+        this();
+
         if (mapper == null) {
             throw new IllegalArgumentException("Mapper cannot be null");
         }
@@ -62,7 +66,8 @@ public class DocumentRequestConverter implements MessageConverter {
                 return documentRequest;
             }
             catch (final IOException e) {
-                e.printStackTrace();
+                log.error(e.getMessage());
+                throw new RuntimeException(e);
             }
         }
 
@@ -77,6 +82,7 @@ public class DocumentRequestConverter implements MessageConverter {
             return session.createTextMessage(json);
         }
         catch (final JsonProcessingException e) {
+            log.error(e.getMessage());
             throw new MessageConversionException(e.getMessage());
         }
 
