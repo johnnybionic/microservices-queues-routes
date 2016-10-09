@@ -52,17 +52,17 @@ public class CorrelationIdServiceHazelcast implements CorrelationIdService {
         Assert.notNull(map, "Expected map not to be null");
 
         // but it might not have the entry yet
-        synchronized (this) {
-            String retVal = map.get(CORRELATION_ID_MAP_KEY);
-            if (retVal == null) {
-                log.debug("Initial value used");
-                retVal = INITIAL_CORRELATION_ID;
-            }
-
-            log.info("Retrieving correlation ID '{}' for task '{}'", retVal, taskId);
-            map.put(CORRELATION_ID_MAP_KEY, nextCorrelationId.nextValue(retVal));
-            return retVal;
+        // synchronized (this) {
+        String retVal = map.get(CORRELATION_ID_MAP_KEY);
+        if (retVal == null) {
+            log.debug("Initial value used");
+            retVal = INITIAL_CORRELATION_ID;
         }
+
+        log.info("Retrieving correlation ID '{}' for task '{}'", retVal, taskId);
+        map.put(CORRELATION_ID_MAP_KEY, nextCorrelationId.nextValue(retVal));
+        return retVal;
+        // }
     }
 
 }

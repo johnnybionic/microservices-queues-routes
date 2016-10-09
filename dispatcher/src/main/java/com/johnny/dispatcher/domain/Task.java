@@ -56,7 +56,7 @@ public class Task {
     private List<String> history;
 
     // only one of these
-    private Long delayPeriod;
+    private Long delayPeriod = 0L;
     private String cronExpression;
 
     // the data is formatted as ISO

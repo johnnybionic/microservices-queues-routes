@@ -3,6 +3,7 @@ package com.johnny.dispatcher.config;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import com.johnny.dispatcher.domain.RunnableTask;
@@ -83,5 +84,21 @@ public class TaskConfigurationTest {
         verify(taskService).findAll();
         verify(threadPoolTaskScheduler).schedule(any(RunnableTask.class), isA(PeriodicTrigger.class));
         verify(threadPoolTaskScheduler).schedule(any(RunnableTask.class), isA(CronTrigger.class));
+    }
+
+    /**
+     * Maybe this should throw an exception instead - capture the current
+     * behaviour anyway.
+     */
+    @Test
+    public void thatInvalidTaskIsIgnored() {
+        final List<Task> list = new LinkedList<>();
+        Task task = new Task();
+        list.add(task);
+
+        when(taskService.findAll()).thenReturn(list);
+        configuration.setUpTasks();
+
+        verifyZeroInteractions(threadPoolTaskScheduler);
     }
 }

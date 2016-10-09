@@ -35,6 +35,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class TaskMaintenanceServiceDefaultTest {
 
     private static final Long TASK_ID = 1L;
+    private static final Long NON_EXISTENT_TASK_ID = 9999L;
 
     @Autowired
     private TaskMaintenanceServiceDefault taskService;
@@ -66,6 +67,15 @@ public class TaskMaintenanceServiceDefaultTest {
         assertEquals(0L, (long) findOne.getCurrentAttempt());
         assertTrue(findOne.isIdle());
 
+    }
+
+    /**
+     * Nothing happens in this case. The behaviour is captured, and gives code
+     * coverage.
+     */
+    @Test
+    public void whenTaskNotFoundThenNothingHappens() {
+        taskService.reset(NON_EXISTENT_TASK_ID);
     }
 
     @Test

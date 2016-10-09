@@ -1,6 +1,7 @@
 package com.johnny.dispatcher.service;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.isA;
@@ -39,13 +40,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
 @ActiveProfiles("junit")
-// @SqlGroup({
-// @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts =
-// "classpath:beforeTests.sql"),
-// @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts =
-// "classpath:afterTests.sql")
-// })
-
 public class RunTaskServiceTest {
 
     private static final String NAME = "Task 1";
@@ -270,6 +264,24 @@ public class RunTaskServiceTest {
         assertNull(scheduleTask.getHistory());
         assertTrue(scheduleTask.isIdle());
         assertEquals(0L, (long) scheduleTask.getCurrentAttempt());
+    }
+
+    /**
+     * Don't mark as complete if not running
+     */
+    @Test
+    public void whenTaskNotRunningThenNotMarkedAsComplete_ByCorrelationId() {
+        scheduleTask.setState(TaskState.SUSPENDED);
+        scheduleTask.setCorrelationId(CORRELATION_ID);
+
+        when(dao.findByCorrelationId(CORRELATION_ID)).thenReturn(scheduleTask);
+
+        runTaskService.markAsComplete(CORRELATION_ID);
+        verify(dao).findByCorrelationId(CORRELATION_ID);
+
+        assertTrue(scheduleTask.isSuspended());
+        assertNotNull(scheduleTask.getCorrelationId());
+
     }
 
     /**

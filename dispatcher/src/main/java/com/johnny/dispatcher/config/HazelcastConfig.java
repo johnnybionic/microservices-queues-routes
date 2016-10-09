@@ -35,14 +35,33 @@ public class HazelcastConfig {
      */
     @Bean
     public HazelcastInstance hazelcastInstance() {
-        final ClientConfig clientConfig = new ClientConfig();
+        final ClientConfig clientConfig = getClientConfig();
         clientConfig.getNetworkConfig().addAddress(applicationConfig.getHazelcasetServerAddress());
 
         final GroupConfig groupConfig = clientConfig.getGroupConfig();
         groupConfig.setName(applicationConfig.getHazelcastGroupServer());
         groupConfig.setPassword(applicationConfig.getHazelcastGroupPassword());
 
-        final HazelcastInstance instance = HazelcastClient.newHazelcastClient(clientConfig);
+        final HazelcastInstance instance = getHazelcastInstance(clientConfig);
         return instance;
+    }
+
+    /**
+     * Gets the {@link HazelcastInstance}. Overridable for test/fake.
+     * 
+     * @param clientConfig the config
+     * @return the instance
+     */
+    protected HazelcastInstance getHazelcastInstance(final ClientConfig clientConfig) {
+        return HazelcastClient.newHazelcastClient(clientConfig);
+    }
+
+    /**
+     * Gets the {@link ClientConfig}. Overridable for test/fake.
+     * 
+     * @return the config
+     */
+    protected ClientConfig getClientConfig() {
+        return new ClientConfig();
     }
 }

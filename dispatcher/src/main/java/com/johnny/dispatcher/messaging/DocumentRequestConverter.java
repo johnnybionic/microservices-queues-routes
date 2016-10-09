@@ -45,6 +45,8 @@ public class DocumentRequestConverter implements MessageConverter {
      */
     @Autowired
     public DocumentRequestConverter(final ObjectMapper mapper) {
+        this();
+
         if (mapper == null) {
             throw new IllegalArgumentException("Mapper cannot be null");
         }
