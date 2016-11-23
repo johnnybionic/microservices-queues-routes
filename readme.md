@@ -11,7 +11,7 @@ Overview
 --------
 
 The basic function of the suite is to request documents from an external system. 
-- The 'external' module periodically fires requests for documents, which are placed onto a Hazelcast queue. There can be any number of these queues
+- The 'scheduler' module periodically fires requests for documents, which are placed onto a Hazelcast queue. There can be any number of these queues
 - The 'dispatcher' module reads the Hazelcast queues, and sends a request to the external system, using ActiveMQ or Apollo. Each new request has a correlation ID to allow the response to be matched to the request. A request cannot be sent if a previous request of the same type is pending, and if a request times out or reports an error, no more requests of that type can be sent. Responses from the external system are saved to disk.
 - The 'external' module simulates an external system. It receives requests via queues or REST, and returns the requested document. 
 
